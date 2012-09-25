@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.b-filter_container {
+			float: left;
+			width: 300px;
+		}
+		.b-filter {
+		}
+		.b-filter-item {
+			cursor: pointer;
+		}
+
+		.b-filter-item:hover {
+			background: #e1e1e1;
+		}
+
+		.b-filter-item.s-selected {
+			background: #d3d3d3;
+		}
+
+		.b-filter-item.s-disabled {
+			color: gray;
+			cursor: default;
+		}
+
+		.b-item.s-disallowed {
+			display: none;
+		}
+	</style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="DataFilter.js"></script>
+	<script type="text/javascript">
+
+		$(function() {
+			var filterOptions = new DataFilterOptions();
+			filterOptions.filterSelector = ".b-filter";
+			filterOptions.filterItemSelector = ".b-filter-item";
+			filterOptions.itemsSelector = ".b-item";
+			filterOptions.isMultiple = true;
+
+			var filter = new DataFilter(filterOptions);
+			filter.init();
+
+			filter.on(filter.events.filterChanged, function(event, name, values, items) {
+				var label = $(".j-selected_value[data-filter_name='" + name + "']");
+				if (label.data("default_label") == null) {
+					label.data("default_label", label.html());
+				}
+				var labelHtml = items.map(function() {
+					return $.trim(this.innerText);
+				}).get().join("; ");
+				label.html(labelHtml || label.data("default_label"));
+			});
+		})
+	</script>
+</head>
+<body>
+	<div class="b-filter_container">
+		<ul class="b-filter" data-filter_name="category">
+			<li class="b-filter-item" data-filter_value="a">a</li>
+			<li class="b-filter-item" data-filter_value="b">b</li>
+			<li class="b-filter-item" data-filter_value="c">c</li>
+			<li class="b-filter-item" data-filter_value="d">d</li>
+			<li class="b-filter-item" data-filter_value="e">e</li>
+			<li class="b-filter-item" data-filter_value="__all">_all</li>
+		</ul>
+		<span>selected: <span class="j-selected_value" data-filter_name="category">All</span></span>
+	</div>
+	<div class="b-filter_container">
+		<ul class="b-filter" data-filter_name="company">
+			<li class="b-filter-item" data-filter_value="aa">aa</li>
+			<li class="b-filter-item" data-filter_value="bb">bb</li>
+			<li class="b-filter-item" data-filter_value="cc">cc</li>
+			<li class="b-filter-item" data-filter_value="dd">dd</li>
+			<li class="b-filter-item" data-filter_value="ee">ee</li>
+			<li class="b-filter-item" data-filter_value="__all">__all</li>
+		</ul>
+		<span>selected: <span class="j-selected_value" data-filter_name="company">All</span></span>
+	</div>
+	<br clear="all" />
+	<ul>
+		<li class="b-item" data-filter_category="a;b" data-filter_company="aa">item a;b aa</li>
+		<li class="b-item" data-filter_category="b;c" data-filter_company="aa">item b;c aa</li>
+		<li class="b-item" data-filter_category="d" data-filter_company="aa">item d aa</li>
+		<li class="b-item" data-filter_category="a;d" data-filter_company="aa">item a;d aa</li>
+		<li class="b-item" data-filter_category="b" data-filter_company="aa">item b aa</li>
+		<li class="b-item" data-filter_category="d" data-filter_company="bb">item d bb</li>
+		<li class="b-item" data-filter_category="d;c" data-filter_company="bb">item d;c bb</li>
+		<li class="b-item" data-filter_category="d" data-filter_company="bb">item d bb</li>
+		<li class="b-item" data-filter_category="d;c" data-filter_company="bb">item d;c bb</li>
+		<li class="b-item" data-filter_category="b" data-filter_company="cc">item b cc</li>
+		<li class="b-item" data-filter_category="c;a" data-filter_company="cc">item c;a cc</li>
+		<li class="b-item" data-filter_category="d;c" data-filter_company="cc">item d;c cc</li>
+		<li class="b-item" data-filter_category="b;e" data-filter_company="cc">item b;e cc</li>
+		<li class="b-item" data-filter_category="c;a;b" data-filter_company="cc">item c;a;b cc</li>
+		<li class="b-item" data-filter_category="d;e" data-filter_company="dd">item d;e dd</li>
+		<li class="b-item" data-filter_category="a;b;c" data-filter_company="dd">item a;b;c dd</li>
+		<li class="b-item" data-filter_category="e;a" data-filter_company="dd">item e;a dd</li>
+		<li class="b-item" data-filter_category="d;b;c" data-filter_company="dd">item d;b;c dd</li>
+		<li class="b-item" data-filter_category="a;d" data-filter_company="dd">item a;d dd</li>
+		<li class="b-item" data-filter_category="e;c" data-filter_company="ee">item e;c ee</li>
+		<li class="b-item" data-filter_category="a;e;d" data-filter_company="ee">item a;e;d ee</li>
+		<li class="b-item" data-filter_category="b" data-filter_company="ee">item b; ee</li>
+		<li class="b-item" data-filter_category="a;e" data-filter_company="ee">item a;e ee</li>
+		<li class="b-item" data-filter_category="a;e" data-filter_company="ee">item a;e ee</li>
+	</ul>
+</body>
+</html>
